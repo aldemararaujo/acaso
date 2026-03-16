@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Cara ou Coroa</title>
+    <title>Simulador de Cara ou Coroa - Bioestatística</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Estilos das Moedas */
         .coin-container {
             perspective: 1000px;
             width: 60px;
@@ -98,128 +107,169 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-2 md:p-8">
+<body class="bg-slate-50 min-h-screen flex flex-col font-sans text-slate-800">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="text-center mb-6 md:mb-8">
-            <h1 class="text-2xl md:text-3xl font-bold text-slate-900 text-balance">Simulador Probabilístico de Moedas</h1>
-            <p class="text-slate-600 text-sm md:text-base px-4">Analise a distribuição binomial através do lançamento de múltiplas moedas.</p>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-8">
-            <!-- Painel de Controles Compacto -->
-            <div class="lg:col-span-1 space-y-4">
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                    <h2 class="font-bold text-slate-800 mb-3 border-b pb-1 text-sm uppercase tracking-wider">Configurações</h2>
-                    
-                    <div class="space-y-4">
-                        <!-- Quantidade de Moedas (Padrao 1) -->
-                        <div class="flex flex-col gap-1">
-                            <div class="flex justify-between items-center">
-                                <label class="text-xs font-semibold text-slate-600">Qtd. Moedas (1-4):</label>
-                                <input type="number" id="num-coins" min="1" max="4" value="1" class="w-12 p-1 border rounded text-center font-bold text-sm">
-                            </div>
-                            <input type="range" id="range-coins" min="1" max="4" value="1" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
-                        </div>
-                        
-                        <!-- Lançamentos (Padrao 10) -->
-                        <div class="flex flex-col gap-1">
-                            <div class="flex justify-between items-center">
-                                <label class="text-xs font-semibold text-slate-600">Lançamentos:</label>
-                                <input type="number" id="num-flips" min="1" max="10000" value="10" class="w-20 p-1 border rounded text-center font-bold text-sm">
-                            </div>
-                            <input type="range" id="range-flips" min="1" max="10000" step="10" value="10" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
-                        </div>
-
-                        <!-- Velocidade (Padrao Lento - 3) -->
-                        <div class="flex flex-col gap-1">
-                            <label class="text-xs font-semibold text-slate-600">Velocidade:</label>
-                            <input type="range" id="input-speed" min="1" max="10" value="3" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
-                            <div class="flex justify-between text-[8px] text-slate-400 font-bold uppercase">
-                                <span>Lento</span>
-                                <span>Rápido</span>
-                            </div>
-                        </div>
-
-                        <div class="pt-2 grid grid-cols-2 gap-2">
-                            <button id="btn-start" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-1 rounded-xl transition shadow-md text-xs">
-                                Sortear
-                            </button>
-                            <button id="btn-reset" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 px-1 rounded-xl transition text-xs">
-                                Reiniciar
-                            </button>
-                        </div>
-                    </div>
+    <!-- Cabeçalho de Navegação -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 w-full shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center gap-2 font-bold text-blue-700 text-lg hover:text-blue-800 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                        BioEstat
+                    </a>
                 </div>
-
-                <!-- Progresso Compacto -->
-                <div id="stats-panel" class="bg-amber-900 p-4 rounded-2xl shadow-lg text-white hidden">
-                    <h3 class="text-amber-200 text-[10px] font-bold uppercase tracking-wider mb-1">Status</h3>
-                    <div class="text-xl font-mono font-bold leading-none"><span id="current-count">0</span> / <span id="total-target">0</span></div>
-                    <div class="mt-3 h-1.5 bg-amber-800 rounded-full overflow-hidden">
-                        <div id="progress-bar" class="h-full bg-amber-400 transition-all duration-300" style="width: 0%"></div>
-                    </div>
+                <!-- Menu Desktop -->
+                <div class="hidden sm:flex sm:space-x-8 sm:items-center">
+                    <a href="index.html" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition">Menu Principal</a>
+                    <a href="moeda.html" class="border-blue-500 text-slate-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Cara ou Coroa</a>
+                    <a href="dados.html" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition">Dados</a>
+                    <a href="pinos.html" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition">Máquina de Galton</a>
                 </div>
             </div>
+        </div>
+        <!-- Menu Mobile (Scroll Horizontal) -->
+        <div class="sm:hidden overflow-x-auto pb-2 px-4 flex space-x-2 border-t border-slate-100 pt-2">
+            <a href="index.html" class="text-slate-500 hover:bg-slate-50 hover:text-slate-700 block px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition">Menu</a>
+            <a href="moeda.html" class="bg-blue-50 text-blue-700 block px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap">Cara ou Coroa</a>
+            <a href="dados.html" class="text-slate-500 hover:bg-slate-50 hover:text-slate-700 block px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition">Dados</a>
+            <a href="pinos.html" class="text-slate-500 hover:bg-slate-50 hover:text-slate-700 block px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition">Máquina de Galton</a>
+        </div>
+    </nav>
 
-            <!-- Visualização -->
-            <div class="lg:col-span-3 space-y-4 md:space-y-6">
-                <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center">
-                    <!-- Área das Moedas -->
-                    <div class="min-h-[80px] md:min-h-[100px] flex flex-wrap justify-center items-center gap-4 md:gap-6 mb-4 w-full" id="coin-display">
-                    </div>
-                    
-                    <!-- Histórico Caminhante -->
-                    <div class="w-full border-t border-slate-50 pt-4 overflow-hidden">
-                        <div class="flex items-center gap-3">
-                            <span class="text-[10px] uppercase font-bold text-slate-400 shrink-0">Últimas Caras:</span>
-                            <div id="history-line" class="flex-1">
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow p-4 md:p-8">
+        <div class="max-w-6xl mx-auto">
+            <header class="text-center mb-6 md:mb-8">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-900 text-balance">Simulador Probabilístico de Moedas</h1>
+                <p class="text-slate-600 text-sm md:text-base px-4">Analise a distribuição binomial através do lançamento de múltiplas moedas.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-8">
+                <!-- Painel de Controles Compacto -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                        <h2 class="font-bold text-slate-800 mb-3 border-b pb-1 text-sm uppercase tracking-wider">Configurações</h2>
+                        
+                        <div class="space-y-4">
+                            <!-- Quantidade de Moedas -->
+                            <div class="flex flex-col gap-1">
+                                <div class="flex justify-between items-center">
+                                    <label class="text-xs font-semibold text-slate-600">Qtd. Moedas (1-4):</label>
+                                    <input type="number" id="num-coins" min="1" max="4" value="1" class="w-12 p-1 border rounded text-center font-bold text-sm outline-none focus:ring-1 focus:ring-amber-500">
+                                </div>
+                                <input type="range" id="range-coins" min="1" max="4" value="1" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
+                            </div>
+                            
+                            <!-- Lançamentos -->
+                            <div class="flex flex-col gap-1">
+                                <div class="flex justify-between items-center">
+                                    <label class="text-xs font-semibold text-slate-600">Lançamentos:</label>
+                                    <input type="number" id="num-flips" min="1" max="10000" value="10" class="w-20 p-1 border rounded text-center font-bold text-sm outline-none focus:ring-1 focus:ring-amber-500">
+                                </div>
+                                <input type="range" id="range-flips" min="1" max="10000" step="10" value="10" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
+                            </div>
+
+                            <!-- Velocidade -->
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-slate-600">Velocidade:</label>
+                                <input type="range" id="input-speed" min="1" max="10" value="3" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
+                                <div class="flex justify-between text-[8px] text-slate-400 font-bold uppercase">
+                                    <span>Lento</span>
+                                    <span>Rápido</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 grid grid-cols-2 gap-2">
+                                <button id="btn-start" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-1 rounded-xl transition shadow-md text-xs">
+                                    Sortear
+                                </button>
+                                <button id="btn-reset" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 px-1 rounded-xl transition text-xs">
+                                    Reiniciar
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Gráfico -->
-                <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h3 class="font-bold text-slate-800 mb-4 text-sm md:text-base">Distribuição de "Caras" por Jogada</h3>
-                    <div class="w-full overflow-hidden">
-                        <div id="chart-container" class="h-40 md:h-64 flex items-end gap-1 px-1 border-b border-slate-200 mb-2 overflow-hidden">
-                        </div>
-                        <div id="labels-container" class="flex gap-1 px-1 items-start">
+                    <!-- Progresso Compacto -->
+                    <div id="stats-panel" class="bg-amber-900 p-4 rounded-2xl shadow-lg text-white hidden">
+                        <h3 class="text-amber-200 text-[10px] font-bold uppercase tracking-wider mb-1">Status</h3>
+                        <div class="text-xl font-mono font-bold leading-none"><span id="current-count">0</span> / <span id="total-target">0</span></div>
+                        <div class="mt-3 h-1.5 bg-amber-800 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-amber-400 transition-all duration-300" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tabela e Exportação -->
-                <div id="full-history-section" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 hidden">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 border-b pb-4">
-                        <div>
-                            <h3 class="font-bold text-slate-800 text-lg">Histórico de Eventos</h3>
-                            <p class="text-xs text-slate-500">Resultados detalhados para análise.</p>
+                <!-- Visualização e Gráfico -->
+                <div class="lg:col-span-3 space-y-4 md:space-y-6">
+                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center">
+                        <!-- Área das Moedas -->
+                        <div class="min-h-[80px] md:min-h-[100px] flex flex-wrap justify-center items-center gap-4 md:gap-6 mb-4 w-full" id="coin-display">
                         </div>
-                        <button id="btn-export" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition shadow-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            Exportar CSV
-                        </button>
+                        
+                        <!-- Histórico Caminhante -->
+                        <div class="w-full border-t border-slate-50 pt-4 overflow-hidden">
+                            <div class="flex items-center gap-3">
+                                <span class="text-[10px] uppercase font-bold text-slate-400 shrink-0">Últimas Caras:</span>
+                                <div id="history-line" class="flex-1">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="max-h-[300px] overflow-y-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="text-slate-500 sticky top-0 bg-white">
-                                <tr>
-                                    <th class="py-2 px-2 border-b">Jogada</th>
-                                    <th class="py-2 px-2 border-b">Resultado (C=Cara, K=Coroa)</th>
-                                    <th class="py-2 px-2 border-b font-bold text-amber-600">Total Caras</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-table-body" class="text-slate-700">
-                            </tbody>
-                        </table>
+
+                    <!-- Gráfico -->
+                    <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-slate-800 mb-4 text-sm md:text-base">Distribuição de "Caras" por Jogada</h3>
+                        <div class="w-full overflow-hidden">
+                            <div id="chart-container" class="h-40 md:h-64 flex items-end gap-1 px-1 border-b border-slate-200 mb-2 overflow-hidden">
+                            </div>
+                            <div id="labels-container" class="flex gap-1 px-1 items-start">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabela e Exportação -->
+                    <div id="full-history-section" class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 hidden">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 border-b pb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg">Histórico de Eventos</h3>
+                                <p class="text-xs text-slate-500">Resultados detalhados para análise.</p>
+                            </div>
+                            <button id="btn-export" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Exportar CSV
+                            </button>
+                        </div>
+                        
+                        <div class="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200">
+                            <table class="w-full text-left text-sm">
+                                <thead class="text-slate-500 sticky top-0 bg-white">
+                                    <tr>
+                                        <th class="py-2 px-2 border-b">Jogada</th>
+                                        <th class="py-2 px-2 border-b">Resultado (C=Cara, K=Coroa)</th>
+                                        <th class="py-2 px-2 border-b font-bold text-amber-600">Total Caras</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-table-body" class="text-slate-700">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="mt-auto text-center text-sm text-slate-500 border-t border-slate-200 pt-8 pb-8 bg-white">
+        <p class="mb-1">Os simuladores são materiais complementares da disciplina de Pesquisa em Ciências da Saúde.</p>
+        <p class="mb-1 font-semibold text-slate-700">Universidade Estadual de Ciências da Saúde de Alagoas (UNCISAL)</p>
+        <p class="mb-4">Maceió, Alagoas, Brasil</p>
+        <p class="text-xs text-slate-400">&copy; 2026</p>
+    </footer>
 
     <script>
         const coinDisplay = document.getElementById('coin-display');
@@ -324,7 +374,7 @@
             const nFlips = parseInt(numFlipsInput.value);
             const speed = parseInt(speedInput.value);
             
-            // Batch processing for performance
+            // Processamento em lote para performance
             const batchSize = nFlips > 500 ? Math.ceil(nFlips / 40) : (nFlips > 50 ? 5 : 1);
             
             let lastResults = [];
@@ -343,7 +393,6 @@
                 
                 historyData.push({ id: totalFlipsDone, results: [...results], sum: headsCount });
                 
-                // Animate history line (sampled for large runs)
                 if (nFlips < 100 || totalFlipsDone % 5 === 0) {
                     const item = document.createElement('div');
                     item.className = 'history-item';
@@ -358,7 +407,6 @@
             updateChart();
 
             if (totalFlipsDone < nFlips) {
-                // Velocity inverted: 1 is slow, 10 is fast
                 timer = setTimeout(processBatch, 1000 / (speed * 4));
             } else {
                 finish();
@@ -408,7 +456,7 @@
             const limit = 500;
             const recent = historyData.slice(-limit).reverse();
             historyTableBody.innerHTML = recent.map(h => `
-                <tr class="hover:bg-amber-50">
+                <tr class="hover:bg-amber-50 transition">
                     <td class="py-2 px-2 border-b text-[10px] text-slate-400">${h.id}</td>
                     <td class="py-2 px-2 border-b font-mono text-sm">${h.results.join(' ')}</td>
                     <td class="py-2 px-2 border-b font-bold text-amber-600 text-sm">${h.sum}</td>
@@ -457,11 +505,5 @@
 
         setup();
     </script>
-     <footer class="mt-16 text-center text-sm text-slate-500 border-t border-slate-200 pt-8 pb-8">
-            <p class="mb-1">Os simuladores são materiais complementares da disciplina de Pesquisa em Ciências da Saúde.</p>
-            <p class="mb-1 font-semibold text-slate-700">Universidade Estadual de Ciências da Saúde de Alagoas (UNCISAL)</p>
-            <p class="mb-4">Maceió, Alagoas, Brasil</p>
-            <p class="text-xs text-slate-400">&copy; 2026</p>
-        </footer>
 </body>
 </html>
