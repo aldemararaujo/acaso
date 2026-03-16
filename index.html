@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Bioestatística</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-4 md:p-8 flex items-center justify-center font-sans text-slate-800">
+
+    <div class="max-w-6xl w-full mx-auto">
+        <header class="text-center mb-12 md:mb-16">
+            <div class="inline-flex items-center justify-center p-3 bg-blue-100 rounded-full mb-4">
+                <svg class="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Laboratório Virtual de Bioestatística</h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                Explore os fundamentos matemáticos da medicina baseada em evidências através de simulações interativas, ferramentas essenciais para a leitura crítica científica.
+            </p>
+        </header>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+            
+            <!-- Card Cara ou Coroa -->
+            <a href="moeda.html" class="block group h-full">
+                <div class="bg-white rounded-2xl p-8 hover-lift border border-slate-200 h-full flex flex-col items-center text-center transition-all duration-300 hover:border-amber-300 hover:shadow-md">
+                    <div class="w-20 h-20 mb-6 bg-amber-50 rounded-full flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                            <ellipse cx="12" cy="10" rx="8" ry="4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 10v4c0 2.21 3.582 4 8 4s8-1.79 8-4v-4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v5" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-3">Cara ou Coroa</h2>
+                    <p class="text-sm text-slate-500 mb-6 flex-1 leading-relaxed">
+                        Analise a distribuição binomial, a natureza dos desfechos clínicos binários e a importância do risco relativo na pesquisa médica.
+                    </p>
+                    <span class="text-amber-600 font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
+                        Acessar Simulador 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Card Lançamento de Dados -->
+            <a href="dados.html" class="block group h-full">
+                <div class="bg-white rounded-2xl p-8 hover-lift border border-slate-200 h-full flex flex-col items-center text-center transition-all duration-300 hover:border-indigo-300 hover:shadow-md">
+                    <div class="w-20 h-20 mb-6 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-500 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                            <rect x="4" y="4" width="16" height="16" rx="3" />
+                            <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                            <circle cx="15.5" cy="15.5" r="1.5" fill="currentColor" />
+                            <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-3">Lançamento de Dados</h2>
+                    <p class="text-sm text-slate-500 mb-6 flex-1 leading-relaxed">
+                        Compreenda a Lei dos Grandes Números, a estabilidade estatística e a necessidade de amostras robustas para evitar erros do acaso.
+                    </p>
+                    <span class="text-indigo-600 font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
+                        Acessar Simulador 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Card Máquina de Galton -->
+            <a href="pinos.html" class="block group h-full">
+                <div class="bg-white rounded-2xl p-8 hover-lift border border-slate-200 h-full flex flex-col items-center text-center transition-all duration-300 hover:border-blue-300 hover:shadow-md">
+                    <div class="w-20 h-20 mb-6 bg-blue-50 rounded-full flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M4 19c0-6 3-12 8-12s8 6 8 12" />
+                           <circle cx="12" cy="5" r="1.5" fill="currentColor" />
+                           <circle cx="9" cy="12" r="1.5" fill="currentColor" />
+                           <circle cx="15" cy="12" r="1.5" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-3">Máquina de Galton</h2>
+                    <p class="text-sm text-slate-500 mb-6 flex-1 leading-relaxed">
+                        Visualize o Teorema do Limite Central, a formação da Curva de Gauss e como a medicina define a normalidade fisiológica.
+                    </p>
+                    <span class="text-blue-600 font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
+                        Acessar Simulador 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </div>
+            </a>
+
+        </div>
+        
+        <footer class="mt-16 text-center text-sm text-slate-500 border-t border-slate-200 pt-8 pb-8">
+            <p class="mb-1">Os simuladores são materiais complementares da disciplina de Pesquisa em Ciências da Saúde.</p>
+            <p class="mb-1 font-semibold text-slate-700">Universidade Estadual de Ciências da Saúde de Alagoas (UNCISAL)</p>
+            <p class="mb-4">Maceió, Alagoas, Brasil</p>
+            <p class="text-xs text-slate-400">&copy; 2026</p>
+        </footer>
+    </div>
+
+</body>
+</html>
